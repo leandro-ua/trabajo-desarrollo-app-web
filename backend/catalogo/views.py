@@ -1,17 +1,8 @@
-from django.shortcuts import render
-
-from django.http import JsonResponse
+from rest_framework import viewsets
 from .models import Puntuacion
+from .serializers import PuntuacionSerializer
 
-def puntuacion_list(request):
-    """Devuelve en JSON las puntuaciones de partidas completadas."""
-    # .values() entrega cada fila como diccionario.
-    # Elegimos los campos a exponer (id, alias_jugador, puntaje, tiempo_jugado_minutos)
-    puntuaciones = list(
-        Puntuacion.objects.filter(partida_completada=True).values(
-            "id", "alias_jugador", "puntaje", "tiempo_jugado_minutos"
-        )
-    ) # list() fuerza la ejecución de la consulta (QuerySet perezoso)
-    
-    # Se envuelve la lista en un objeto para poder agregar metadatos después
-    return JsonResponse({"count": len(puntuaciones), "results": puntuaciones})
+class PuntuacionViewSet(viewsets.ModelViewSet):
+    """CRUD completo de Puntuacion: listar, crear, ver, editar y eliminar."""
+    queryset = Puntuacion.objects.all()
+    serializer_class = PuntuacionSerializer
