@@ -8,8 +8,8 @@ export default function App() {
   const [puntuaciones, setPuntuaciones] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
+  const [editando, setEditando] = useState(null); // puntuación en edición o null[cite: 17]
 
-  // useCallback mantiene la misma función entre renders[cite: 12]
   const cargar = useCallback(async () => {
     try {
       setError(null);
@@ -19,24 +19,51 @@ export default function App() {
     } catch (e) {
       setError("No se pudo cargar la lista. ¿Está encendido el servidor Django?");
     } finally {
-      setCargando(false); // se ejecuta siempre, haya éxito o error[cite: 12]
+      setCargando(false);
     }
   }, []);
 
-  // Se ejecuta al montar el componente: carga inicial de datos[cite: 12]
   useEffect(() => {
     cargar();
   }, [cargar]);
 
+  // Tras crear o editar: se cierra el modo edición y se recarga la lista[cite: 17]
+  const handleGuardado = () => {
+    setEditando(null);
+    cargar();
+  };
+
+  const handleEliminar = async (puntuacion) => {
+    // Confirmación antes de una acción que no se puede deshacer[cite: 17]
+    if (!window.confirm("¿Eliminar la puntuación de «" + puntuacion.alias_jugador + "»?")) return;
+    
+    try {
+      await puntuacionesApi.eliminar(puntuacion.id);
+      cargar();
+    } catch (e) {
+      setError("No se pudo eliminar la puntuación.");
+    }
+  };
+
   return (
     <main className="contenedor">
       <h1>Puntuaciones</h1>
-
-      <PuntuacionForm puntuacion={null} onGuardado={cargar} onCancelar={() => {}} />
+      
+      <PuntuacionForm
+        puntuacion={editando}
+        onGuardado={handleGuardado}
+        onCancelar={() => setEditando(null)}
+      />
       
       {cargando && <p className="aviso">Cargando…</p>}
       {error && <p className="aviso error">{error}</p>}
-      {!cargando && !error && <PuntuacionList puntuaciones={puntuaciones} />}
+      {!cargando && !error && (
+        <PuntuacionList
+          puntuaciones={puntuaciones}
+          onEditar={setEditando}
+          onEliminar={handleEliminar}
+        />
+      )}
     </main>
   );
 }
