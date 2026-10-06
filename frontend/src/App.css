@@ -1,0 +1,11 @@
+.contenedor { max-width: 900px; margin: 2rem auto; padding: 0 1rem; font-family: Calibri, sans-serif; }
+h1 { color: #1F3A5F; }
+.aviso { padding: .75rem 1rem; background: #EAF4F4; border-left: 4px solid #1A8A8A; }
+.aviso.error { background: #FDECEC; border-color: #C0392B; color: #8E1F14; }
+.tabla { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.tabla th { background: #1F3A5F; color: white; text-align: left; padding: .5rem; }
+.tabla td { padding: .5rem; border-bottom: 1px solid #ddd; }
+.formulario { display: grid; gap: .75rem; margin: 1.5rem 0; padding: 1rem; border: 1px solid #ccd; border-radius: 6px; }
+.formulario label { display: grid; gap: .25rem; font-weight: 600; }
+.campo-error { color: #C0392B; font-size: .85rem; font-weight: 400; }
+button { padding: .4rem .8rem; margin-right: .4rem; cursor: pointer; }
