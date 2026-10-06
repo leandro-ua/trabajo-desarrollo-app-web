@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export default function App() {
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/puntuaciones/")
+    fetch("/api/puntuaciones/")
       .then((res) => res.json())
       .then((datos) => console.log("Datos recibidos:", datos))
       .catch((err) => console.error("Falló la petición:", err));
