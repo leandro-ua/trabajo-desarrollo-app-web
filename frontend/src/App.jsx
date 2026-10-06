@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { puntuacionesApi } from "./api/client";
 import PuntuacionList from "./components/PuntuacionList";
+import PuntuacionForm from "./components/PuntuacionForm";
 import "./App.css";
 
 export default function App() {
@@ -30,6 +31,8 @@ export default function App() {
   return (
     <main className="contenedor">
       <h1>Puntuaciones</h1>
+
+      <PuntuacionForm puntuacion={null} onGuardado={cargar} onCancelar={() => {}} />
       
       {cargando && <p className="aviso">Cargando…</p>}
       {error && <p className="aviso error">{error}</p>}
